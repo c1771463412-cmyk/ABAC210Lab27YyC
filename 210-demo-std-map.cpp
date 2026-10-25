@@ -4,6 +4,7 @@
 #include <map>
 #include <tuple>
 #include <string>
+#include <limits>
 using namespace std;
 
 // Prototype
@@ -30,6 +31,15 @@ int main() {
         cout << "4. Exit" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
+
+        // Check for invalid input
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a number." << endl;
+            choice = 0;
+            continue;
+        }
 
         switch (choice) {
             case 1: {
@@ -128,9 +138,8 @@ int main() {
     return 0;
 }
 
-// printVillagers() prints all villagers and their information
-// arguments: const map<string, tuple<int, string, string>> &villagers
-//            - the map containing all villager information
+// printVillagers() displays all villagers and their information
+// arguments: reference to a map containing villager information
 // returns: none
 void printVillagers(const map<string, tuple<int, string, string>> &villagers) {
     cout << "\nVillager List:" << endl;
