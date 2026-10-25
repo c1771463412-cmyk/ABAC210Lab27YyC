@@ -6,10 +6,12 @@
 #include <string>
 using namespace std;
 
+// Prototype
+void printVillagers(const map<string, tuple<int, string, string>> &villagers);
+
 int main() {
     // declarations
     map<string, tuple<int, string, string>> villagers;
-
 
     // Insert villagers into the map
     // Each villager has a friendship level, species, and catchphrase
@@ -17,32 +19,6 @@ int main() {
     villagers["Raymond"] = {8, "Cat", "Nice fit"};
     villagers["Marshal"] = {6, "Squirrel", "Sulky"};
 
-
-    // Access the map using a range-based for loop
-    cout << "Villager details (for loop):" << endl;
-
-    for (auto pair : villagers) {
-        cout << pair.first << " ["
-             << get<0>(pair.second) << ", "
-             << get<1>(pair.second) << ", "
-             << get<2>(pair.second) << "]" << endl;
-    }
-
-
-    // Access the map using iterators
-    cout << "\nVillager details (iterators):" << endl;
-
-    for (map<string, tuple<int, string, string>>::iterator it = villagers.begin(); 
-    it != villagers.end(); ++it) {
-
-        cout << it->first << " ["
-             << get<0>(it->second) << ", "
-             << get<1>(it->second) << ", "
-             << get<2>(it->second) << "]" << endl;
-    }
-
-
-    //-----------------------------------------------------
     // Display the menu and let the user choose an option
     int choice;
 
@@ -110,9 +86,28 @@ int main() {
                 break;
             }
 
-            case 3:
-                cout << "Search for Villager selected." << endl;
+            case 3: {
+                string name;
+
+                cout << "Enter villager name: ";
+                cin >> name;
+
+                // Search for the villager
+                auto it = villagers.find(name);
+
+                if (it != villagers.end()) {
+                    // Display the villager's information
+                    cout << "\nVillager: " << it->first << endl;
+                    cout << "Friendship Level: " << get<0>(it->second) << endl;
+                    cout << "Species: " << get<1>(it->second) << endl;
+                    cout << "Catchphrase: " << get<2>(it->second) << endl;
+                }
+                else {
+                    cout << "Villager not found." << endl;
+                }
+
                 break;
+            }
 
             case 4:
                 cout << "Exiting program." << endl;
@@ -122,8 +117,33 @@ int main() {
                 cout << "Invalid choice. Please try again." << endl;
         }
 
+        // Display the updated villager list after each operation
+        if (choice != 4) {
+            printVillagers(villagers);
+        }
+
     } while (choice != 4);
 
 
     return 0;
+}
+
+// printVillagers() prints all villagers and their information
+// arguments: const map<string, tuple<int, string, string>> &villagers
+//            - the map containing all villager information
+// returns: none
+void printVillagers(const map<string, tuple<int, string, string>> &villagers) {
+    cout << "\nVillager List:" << endl;
+
+    if (villagers.empty()) {
+        cout << "No villagers found." << endl;
+    }
+    else {
+        for (auto pair : villagers) {
+            cout << pair.first << " ["
+                 << get<0>(pair.second) << ", "
+                 << get<1>(pair.second) << ", "
+                 << get<2>(pair.second) << "]" << endl;
+        }
+    }
 }
