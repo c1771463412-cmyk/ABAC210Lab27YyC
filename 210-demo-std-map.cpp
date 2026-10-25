@@ -39,11 +39,18 @@ int main() {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Invalid input. Please enter a number." << endl;
-            choice = 0;
+            continue;
+        }
+
+        // Check for extra characters after the number
+        if (cin.peek() != '\n') {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a number." << endl;
             continue;
         }
 
         switch (choice) {
+            // Add villager
             case 1: {
                 string name;
                 int friendship;
@@ -54,8 +61,37 @@ int main() {
                 cout << "Enter villager name: ";
                 cin >> name;
 
+                // Check if the villager already exists
+                auto it = villagers.find(name);
+
+                if (it != villagers.end()) {
+                    cout << "Villager already exists." << endl;
+                    break;
+                }
+
                 cout << "Enter friendship level (0-10): ";
                 cin >> friendship;
+
+                // Check if friendship level is a valid number
+                if (cin.fail()) {
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << "Invalid friendship level." << endl;
+                    break;
+                }
+
+                // Check for extra characters after the number
+                if (cin.peek() != '\n') {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << "Invalid friendship level." << endl;
+                    break;
+                }
+
+                // Check if friendship level is between 0 and 10
+                if (friendship < 0 || friendship > 10) {
+                    cout << "Invalid friendship level." << endl;
+                    break;
+                }
 
                 cout << "Enter species: ";
                 cin >> species;
@@ -64,24 +100,14 @@ int main() {
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getline(cin, catchphrase);
 
-                // Check if the villager already exists
-                auto it = villagers.find(name);
-
-                if (it != villagers.end()) {
-                    cout << "Villager already exists." << endl;
-                }
-                else if (friendship < 0 || friendship > 10) {
-                    cout << "Invalid friendship level." << endl;
-                }
-                else {
-                    // Add the new villager to the map
-                    villagers[name] = {friendship, species, catchphrase};
-                    cout << name << " added successfully." << endl;
-                }
+                // Add the new villager to the map
+                villagers[name] = {friendship, species, catchphrase};
+                cout << name << " added successfully." << endl;
 
                 break;
             }
 
+            // Delete villager
             case 2: {
                 string name;
 
@@ -103,6 +129,7 @@ int main() {
                 break;
             }
 
+            // Increase Friendship
             case 3: {
                 string name;
 
@@ -130,6 +157,7 @@ int main() {
                 break;
             }
 
+            // Decrease Friendship
             case 4: {
                 string name;
 
@@ -157,6 +185,7 @@ int main() {
                 break;
             }
 
+            // Search for Villager
             case 5: {
                 string name;
 
@@ -180,6 +209,7 @@ int main() {
                 break;
             }
 
+            // Exit
             case 6:
                 cout << "Exiting program." << endl;
                 break;
@@ -194,7 +224,6 @@ int main() {
         }
 
     } while (choice != 6);
-
 
     return 0;
 }
