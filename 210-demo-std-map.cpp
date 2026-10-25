@@ -25,10 +25,12 @@ int main() {
 
     do {
         cout << "\nVillager Menu" << endl;
-        cout << "1. Increase Friendship" << endl;
-        cout << "2. Decrease Friendship" << endl;
-        cout << "3. Search for Villager" << endl;
-        cout << "4. Exit" << endl;
+        cout << "1. Add Villager" << endl;
+        cout << "2. Delete Villager" << endl;
+        cout << "3. Increase Friendship" << endl;
+        cout << "4. Decrease Friendship" << endl;
+        cout << "5. Search for Villager" << endl;
+        cout << "6. Exit" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -43,6 +45,65 @@ int main() {
 
         switch (choice) {
             case 1: {
+                string name;
+                int friendship;
+                string species;
+                string catchphrase;
+
+                // Get the new villager's information
+                cout << "Enter villager name: ";
+                cin >> name;
+
+                cout << "Enter friendship level (0-10): ";
+                cin >> friendship;
+
+                cout << "Enter species: ";
+                cin >> species;
+
+                cout << "Enter catchphrase: ";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                getline(cin, catchphrase);
+
+                // Check if the villager already exists
+                auto it = villagers.find(name);
+
+                if (it != villagers.end()) {
+                    cout << "Villager already exists." << endl;
+                }
+                else if (friendship < 0 || friendship > 10) {
+                    cout << "Invalid friendship level." << endl;
+                }
+                else {
+                    // Add the new villager to the map
+                    villagers[name] = {friendship, species, catchphrase};
+                    cout << name << " added successfully." << endl;
+                }
+
+                break;
+            }
+
+            case 2: {
+                string name;
+
+                cout << "Enter villager name: ";
+                cin >> name;
+
+                // Search for the villager
+                auto it = villagers.find(name);
+
+                if (it != villagers.end()) {
+                    // Delete the villager from the map
+                    villagers.erase(name);
+                    cout << name << " deleted successfully." << endl;
+                }
+                else {
+                    cout << "Villager not found." << endl;
+                }
+
+                break;
+            }
+
+            case 3: {
                 string name;
 
                 cout << "Enter villager name: ";
@@ -69,7 +130,7 @@ int main() {
                 break;
             }
 
-            case 2: {
+            case 4: {
                 string name;
 
                 cout << "Enter villager name: ";
@@ -96,7 +157,7 @@ int main() {
                 break;
             }
 
-            case 3: {
+            case 5: {
                 string name;
 
                 cout << "Enter villager name: ";
@@ -119,7 +180,7 @@ int main() {
                 break;
             }
 
-            case 4:
+            case 6:
                 cout << "Exiting program." << endl;
                 break;
 
@@ -128,11 +189,11 @@ int main() {
         }
 
         // Display the updated villager list after each operation
-        if (choice != 4) {
+        if (choice != 6) {
             printVillagers(villagers);
         }
 
-    } while (choice != 4);
+    } while (choice != 6);
 
 
     return 0;
