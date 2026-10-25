@@ -83,9 +83,32 @@ int main() {
                 break;
             }
 
-            case 2:
-                cout << "Decrease Friendship selected." << endl;
+            case 2: {
+                string name;
+
+                cout << "Enter villager name: ";
+                cin >> name;
+
+                // Search for the villager
+                auto it = villagers.find(name);
+
+                if (it != villagers.end()) {
+                    // Decrease friendship without going below 0
+                    if (get<0>(it->second) > 0) {
+                        get<0>(it->second)--;
+                        cout << name << "'s friendship decreased to "
+                             << get<0>(it->second) << endl;
+                    }
+                    else {
+                        cout << name << "'s friendship is already at 0." << endl;
+                    }
+                }
+                else {
+                    cout << "Villager not found." << endl;
+                }
+
                 break;
+            }
 
             case 3:
                 cout << "Search for Villager selected." << endl;
